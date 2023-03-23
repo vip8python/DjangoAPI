@@ -1,12 +1,15 @@
 from rest_framework import serializers
 from .models import *
 
+
 class AlbumReviewSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     user_id = serializers.ReadOnlyField(source='user.id')
+
     class Meta:
         model = AlbumReview
         fields = ['id', 'user', 'user_id', 'album', 'content', 'score']
+
 
 class SongSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
@@ -16,6 +19,7 @@ class SongSerializer(serializers.ModelSerializer):
         model = Song
         fields = ['id', 'name', 'user', 'user_id', 'duration', 'album']
 
+
 class BandSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     user_id = serializers.ReadOnlyField(source='user.id')
@@ -23,6 +27,7 @@ class BandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Band
         fields = ['id', 'user', 'user_id', 'name']
+
 
 class AlbumSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
@@ -46,10 +51,6 @@ class AlbumReviewLikeSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     user_id = serializers.ReadOnlyField(source='user.id')
 
-
     class Meta:
         model = AlbumReviewLike
         fields = ['id', 'user', 'user_id', 'album_review']
-
-
-
