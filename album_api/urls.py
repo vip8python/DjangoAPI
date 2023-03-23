@@ -2,10 +2,15 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
-    path('review/', AlbumReviewList.as_view()),
-    path('song/', SongList.as_view()),
-    path('band/', BandList.as_view()),
-    path('album/', AlbumList.as_view()),
-    path('comment/', AlbumReviewCommentList.as_view()),
-    path('like/', AlbumReviewLikeList.as_view()),
+    path('reviews/', AlbumReviewList.as_view()),
+    path('reviews/<int:pk>/', AlbumReviewDetail.as_view()),
+    path('reviews/<int:pk>/comments/', AlbumReviewCommentList.as_view()),
+
+    path('songs/', SongList.as_view()),
+    path('bands/', BandList.as_view()),
+    path('albums/', AlbumList.as_view()),
+    # path('comments/', AlbumReviewCommentList.as_view()),
+    path('comments/<int:pk>/', AlbumReviewCommentDetail.as_view()),
+
+    path('likes/', AlbumReviewLikeList.as_view()),
 ]

@@ -21,9 +21,9 @@ class Album(models.Model):
 class Song(models.Model):
     name = models.CharField(max_length=150)
     duration = models.PositiveIntegerField(default=0, validators=[
-            MaxValueValidator(10),
-            MinValueValidator(0)
-        ])
+        MaxValueValidator(10),
+        MinValueValidator(0)
+    ])
     album = models.ForeignKey(Album, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -35,9 +35,9 @@ class AlbumReview(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE, null=True, blank=True)
     content = models.CharField(max_length=1000)
     score = models.PositiveIntegerField(default=0, validators=[
-            MaxValueValidator(10),
-            MinValueValidator(0)
-        ])
+        MaxValueValidator(10),
+        MinValueValidator(0)
+    ])
 
     def __str__(self):
         return f'{self.content} {self.score}'
@@ -45,7 +45,8 @@ class AlbumReview(models.Model):
 
 class AlbumReviewComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    album_review = models.ForeignKey(AlbumReview, on_delete=models.CASCADE, null=True, blank=True)
+    album_review = models.ForeignKey(AlbumReview, on_delete=models.CASCADE, null=True, blank=True,
+                                     related_name='album_review')
     content = models.CharField(max_length=1000)
 
     def __str__(self):
