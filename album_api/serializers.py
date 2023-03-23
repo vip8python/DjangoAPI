@@ -17,13 +17,17 @@ class AlbumReviewSerializer(serializers.ModelSerializer):
     user_id = serializers.ReadOnlyField(source='user.id')
     album_review_count = serializers.SerializerMethodField()
     album_review = serializers.StringRelatedField(many=True)
+    likes = serializers.SerializerMethodField()
 
     class Meta:
         model = AlbumReview
-        fields = ['id', 'user', 'album_review_count', 'album_review', 'user_id', 'album', 'content', 'score']
+        fields = ['id', 'user', 'image', 'likes', 'album_review_count', 'album_review', 'user_id', 'album', 'content', 'score']
 
     def get_album_review_count(self, obj):
         return AlbumReviewComment.objects.filter(album_review=obj).count()
+
+    def get_likes(self, post):
+        return AlbumReviewLike.objects.filter(album_review=post).count()
 
 
 class SongSerializer(serializers.ModelSerializer):
@@ -60,3 +64,23 @@ class AlbumReviewLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = AlbumReviewLike
         fields = ['id', 'user', 'user_id', 'album_review']
+
+
+class AlbumReviewLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AlbumReviewLike
+        fields = ['id']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user

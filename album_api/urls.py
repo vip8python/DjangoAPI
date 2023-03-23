@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .views import *
 
+
 urlpatterns = [
     path('reviews/', AlbumReviewList.as_view()),
     path('reviews/<int:pk>/', AlbumReviewDetail.as_view()),
@@ -13,4 +14,7 @@ urlpatterns = [
     path('comments/<int:pk>/', AlbumReviewCommentDetail.as_view()),
 
     path('likes/', AlbumReviewLikeList.as_view()),
+    path('reviews/<int:pk>/like/', AlbumReviewLikeCreate.as_view()),
+
+    path('signup', UserCreate.as_view()),
 ]

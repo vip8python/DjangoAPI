@@ -38,6 +38,7 @@ class AlbumReview(models.Model):
         MaxValueValidator(10),
         MinValueValidator(0)
     ])
+    image = models.ImageField(upload_to='pictures', null=True)
 
     def __str__(self):
         return f'{self.content} {self.score}'

@@ -1,8 +1,7 @@
-from django.shortcuts import render
-from rest_framework import generics, permissions
-from .models import *
 from .serializers import *
 from rest_framework.exceptions import ValidationError
+from rest_framework import generics, permissions, mixins, status
+from rest_framework.response import Response
 
 
 class AlbumReviewList(generics.ListCreateAPIView):
@@ -99,3 +98,39 @@ class AlbumReviewLikeList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class AlbumReviewLikeCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
+    serializer_class = AlbumReviewLikeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        albumreview = AlbumReview.objects.get(pk=self.kwargs['pk'])
+        return AlbumReviewLike.objects.filter(album_review=albumreview, user=user)
+
+    def perform_create(self, serializer):
+        if self.get_queryset().exists():
+            raise ValidationError('Jus jau palikote patiktuka siam pranesimui!')
+        albumreview = AlbumReview.objects.get(pk=self.kwargs['pk'])
+        serializer.save(user=self.request.user, album_review=albumreview)
+
+    def delete(self, request, *args, **kwargs):
+        if self.get_queryset().exists():
+            self.get_queryset().delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            raise ValidationError('Jūs nepalikote patiktuko po šiuo pranešimu!')
+
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.AllowAny, )
+
+    def delete(self, request, *args, **kwargs):
+        user = User.objects.filter(pk=self.request.user.pk)
+        if user.exists():
+            user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            raise ValidationError('User doesn\'t exist.')
