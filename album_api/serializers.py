@@ -21,7 +21,8 @@ class AlbumReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AlbumReview
-        fields = ['id', 'user', 'image', 'likes', 'album_review_count', 'album_review', 'user_id', 'album', 'content', 'score']
+        # fields = ['id', 'user', 'image', 'likes', 'album_review_count', 'album_review', 'user_id', 'album', 'content', 'score']
+        fields = '__all__'
 
     def get_album_review_count(self, obj):
         return AlbumReviewComment.objects.filter(album_review=obj).count()
@@ -36,7 +37,8 @@ class SongSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Song
-        fields = ['id', 'name', 'user', 'user_id', 'duration', 'album']
+        # fields = ['id', 'name', 'user', 'user_id', 'duration', 'album']
+        fields = "__all__"
 
 
 class BandSerializer(serializers.ModelSerializer):
@@ -45,7 +47,8 @@ class BandSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Band
-        fields = ['id', 'user', 'user_id', 'name']
+        # fields = ['id', 'user', 'user_id', 'name']
+        fields = '__all__'
 
 
 class AlbumSerializer(serializers.ModelSerializer):
@@ -54,7 +57,8 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Album
-        fields = ['id', 'user', 'user_id', 'name', 'band']
+        # fields = ['id', 'user', 'user_id', 'name', 'band']
+        fields = "__all__"
 
 
 class AlbumReviewLikeSerializer(serializers.ModelSerializer):
@@ -63,13 +67,8 @@ class AlbumReviewLikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AlbumReviewLike
-        fields = ['id', 'user', 'user_id', 'album_review']
-
-
-class AlbumReviewLikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AlbumReviewLike
-        fields = ['id']
+        # fields = ['id', 'user', 'user_id', 'album_review']
+        fields = "__all__"
 
 
 class UserSerializer(serializers.ModelSerializer):

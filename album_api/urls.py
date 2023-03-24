@@ -1,7 +1,6 @@
 from django.urls import path, include
 from .views import *
 
-
 urlpatterns = [
     path('reviews/', AlbumReviewList.as_view()),
     path('reviews/<int:pk>/', AlbumReviewDetail.as_view()),
